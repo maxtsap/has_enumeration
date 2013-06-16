@@ -72,6 +72,7 @@ module HasEnumeration
       inverted_mapping = mapping.invert
       Class.new do
         attr_reader :raw_value
+        alias_method :humanize, :raw_value
 
         define_method :initialize do |raw_value|
           @raw_value = raw_value
@@ -100,6 +101,9 @@ module HasEnumeration
         end
 
         (class <<self;self;end).class_eval do
+          define_method :source do
+            mapping
+          end
           define_method :from_sym do |sym|
             unless mapping.has_key?(sym)
               raise ArgumentError.new(

@@ -73,3 +73,21 @@ describe HasEnumeration, 'string formatting' do
     object.color.to_s.should == 'red'
   end
 end
+
+describe HasEnumeration, 'hash value' do
+  it 'returns the raw value as a string if raw_value is called on it'  do
+    object = ExplicitlyMappedModel.new(:color => :red)
+    object.color.raw_value.should == 'Red color'
+  end
+
+  it 'returns the raw value as a string if humanize is called on it'  do
+    object = ExplicitlyMappedModel.new(:color => :red)
+    object.color.humanize.should == 'Red color'
+  end
+end
+
+describe HasEnumeration, 'source' do
+  it 'returns the passed hash'  do
+    ExplicitlyMappedModel::Color.source.should == {:red=>'Red color', :green=>2, :blue=>3}    
+  end
+end
