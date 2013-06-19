@@ -96,7 +96,7 @@ module HasEnumeration
           predicate = "#{sym}?".to_sym
           value = mapping[sym]
           define_method predicate do
-            @raw_value == value 
+            @raw_value.to_sym == sym.to_sym
           end
         end
 
