@@ -69,14 +69,14 @@ module HasEnumeration
     end
 
     def create_enumeration_mapping_class(mapping)
-      inverted_mapping = mapping.invert
+      mapping
       Class.new do
         attr_reader :raw_value
         alias_method :humanize, :raw_value
 
         define_method :initialize do |raw_value|
           @raw_value = raw_value
-          @value = inverted_mapping[raw_value]
+          @value = mapping[raw_value]
         end
 
         define_method :to_sym do
@@ -110,7 +110,7 @@ module HasEnumeration
                 "#{sym.inspect} is not one of {#{mapping.keys.map(&:inspect).sort.join(', ')}}"
               )
             end
-            new(mapping[sym])
+            new(sym)
           end
         end
       end
