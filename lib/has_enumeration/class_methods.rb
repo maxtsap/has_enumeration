@@ -84,12 +84,15 @@ module HasEnumeration
         end
 
         define_method :value do
-          puts "#{self.class.name}#value is deprecated. Use #to_sym instead. (#{caller[0]})"
-          to_sym
+          @values
         end
 
         define_method :to_s do
           @value.to_s
+        end
+
+        define_method :humanize do
+          @raw_value.to_s.humanize
         end
 
         mapping.keys.each do |sym|

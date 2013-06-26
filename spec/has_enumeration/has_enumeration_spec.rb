@@ -70,19 +70,19 @@ end
 describe HasEnumeration, 'string formatting' do
   it 'returns the value as a string if to_s is called on it'  do
     object = ExplicitlyMappedModel.new(:color => :red)
-    object.color.to_s.should == 'red'
+    object.color.to_s.should == 'Red color'
   end
 end
 
 describe HasEnumeration, 'hash value' do
   it 'returns the raw value as a string if raw_value is called on it'  do
     object = ExplicitlyMappedModel.new(:color => :red)
-    object.color.raw_value.should == 'Red color'
+    object.color.raw_value.should == :red
   end
 
   it 'returns the raw value as a string if humanize is called on it'  do
     object = ExplicitlyMappedModel.new(:color => :red)
-    object.color.humanize.should == 'Red color'
+    object.color.humanize.should == 'Red'
   end
 end
 
