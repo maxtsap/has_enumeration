@@ -69,7 +69,7 @@ module HasEnumeration
     end
 
     def create_enumeration_mapping_class(mapping)
-      mapping
+      mapping = mapping.with_indifferent_access
       Class.new do
         attr_reader :raw_value
         alias_method :humanize, :raw_value

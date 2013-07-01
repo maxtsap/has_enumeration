@@ -8,7 +8,7 @@ describe HasEnumeration, 'with invalid values' do
   it 'raises an exception when assigned an invalid value' do
     lambda do
       @model.color = :beige
-    end.should raise_error(ArgumentError, ':beige is not one of {:blue, :green, :red}')
+    end.should raise_error(ArgumentError, ':beige is not one of {"blue", "green", "red"}')
   end
 
   if ActiveRecord::VERSION::MAJOR >= 3
@@ -16,7 +16,7 @@ describe HasEnumeration, 'with invalid values' do
       it 'raises an exception when finding with an invalid value' do
         lambda do
           ExplicitlyMappedModel.where(:color => :beige).all
-        end.should raise_error(ArgumentError, ':beige is not one of {:blue, :green, :red}')
+        end.should raise_error(ArgumentError, ':beige is not one of {"blue", "green", "red"}')
       end
 
       #TODO: handle porting to some other meta_where equivalent that is forward compatible with ActiveRecord 3.1.x+
@@ -31,7 +31,7 @@ describe HasEnumeration, 'with invalid values' do
       it 'raises an exception when finding with an invalid value' do
         lambda do
           ExplicitlyMappedModel.find(:all, :conditions => {:color => :beige})
-        end.should raise_error(ArgumentError, ':beige is not one of {:blue, :green, :red}')
+        end.should raise_error(ArgumentError, ':beige is not one of {"blue", "green", "red"}')
       end
     end
   end
@@ -89,5 +89,12 @@ end
 describe HasEnumeration, 'source' do
   it 'returns the passed hash'  do
     ExplicitlyMappedModel::Color.source.should == {:red=>'Red color', :green=>2, :blue=>3}    
+  end
+end
+
+describe HasEnumeration, 'has hash with with_indifferent_access' do
+  it 'it allows assign string'  do
+    object = ExplicitlyMappedModel.create!(:color => 'red')
+    object.color.raw_value.should == 'red'
   end
 end
