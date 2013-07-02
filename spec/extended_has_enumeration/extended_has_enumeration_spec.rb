@@ -1,6 +1,6 @@
 require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
-describe HasEnumeration, 'with invalid values' do
+describe ExtendedHasEnumeration, 'with invalid values' do
   before(:each) do
     @model = ExplicitlyMappedModel.new
   end
@@ -37,7 +37,7 @@ describe HasEnumeration, 'with invalid values' do
   end
 end
 
-describe HasEnumeration, 'with an uninitialied value' do
+describe ExtendedHasEnumeration, 'with an uninitialied value' do
   context 'in a newly-created object' do
     it 'returns nil for the value of the enumeration' do
       ExplicitlyMappedModel.new.color.should be_nil
@@ -52,7 +52,7 @@ describe HasEnumeration, 'with an uninitialied value' do
   end
 end
 
-describe HasEnumeration, 'assignment of nil' do
+describe ExtendedHasEnumeration, 'assignment of nil' do
   it 'sets the enumeration to nil' do
     object = ExplicitlyMappedModel.new(:color => :red)
     object.color = nil
@@ -67,14 +67,14 @@ describe HasEnumeration, 'assignment of nil' do
   end
 end
 
-describe HasEnumeration, 'string formatting' do
+describe ExtendedHasEnumeration, 'string formatting' do
   it 'returns the value as a string if to_s is called on it'  do
     object = ExplicitlyMappedModel.new(:color => :red)
     object.color.to_s.should == 'Red color'
   end
 end
 
-describe HasEnumeration, 'hash value' do
+describe ExtendedHasEnumeration, 'hash value' do
   it 'returns the raw value as a string if raw_value is called on it'  do
     object = ExplicitlyMappedModel.new(:color => :red)
     object.color.raw_value.should == :red
@@ -86,13 +86,13 @@ describe HasEnumeration, 'hash value' do
   end
 end
 
-describe HasEnumeration, 'source' do
+describe ExtendedHasEnumeration, 'source' do
   it 'returns the passed hash'  do
-    ExplicitlyMappedModel::Color.source.should == {:red=>'Red color', :green=>2, :blue=>3}    
+    ExplicitlyMappedModel::Color.source.should == {'red'=>'Red color', 'green'=>2, 'blue'=>3}    
   end
 end
 
-describe HasEnumeration, 'has hash with with_indifferent_access' do
+describe ExtendedHasEnumeration, 'has hash with with_indifferent_access' do
   it 'it allows assign string'  do
     object = ExplicitlyMappedModel.create!(:color => 'red')
     object.color.raw_value.should == 'red'

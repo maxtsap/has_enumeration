@@ -1,4 +1,4 @@
-module HasEnumeration
+module ExtendedHasEnumeration
   module AggregateConditionsOverride
     # Override the aggregate hash conditions behavior to coerce has_enumeration
     # attributes that show up in finder options as symbols into instances of

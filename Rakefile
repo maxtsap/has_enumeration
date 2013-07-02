@@ -8,7 +8,7 @@ require 'rspec/core/rake_task'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
-    gemspec.name = "has_enumeration"
+    gemspec.name = "extended_has_enumeration"
     gemspec.summary = "Support for symbol-based enumerations in ActiveRecord"
     gemspec.description = <<-EOF
 Extends ActiveRecord with the has_enumeration method allowing a symbolic
@@ -21,9 +21,9 @@ for the enumeration.  has_enumeration has been tested with Ruby 1.8.7,
 Ruby 1.9.2, JRuby 1.5.5, Rubinius 1.1.0, ActiveRecord 2.3.10, and ActiveRecord
 3.0.3.
 EOF
-    gemspec.email = "greg@rujubu.com"
-    gemspec.homepage = "http://github.com/gregspurrier/has_enumeration"
-    gemspec.author = "Greg Spurrier"
+    gemspec.email = "maxtsap@gmail.com"
+    gemspec.homepage = "http://github.com/maxtsap/has_enumeration"
+    gemspec.author = "Greg Spurrier and Maxim Tsaplin"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

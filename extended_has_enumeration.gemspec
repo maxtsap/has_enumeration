@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
-  s.name = "has_enumeration"
+  s.name = "extended_has_enumeration"
   s.version = "1.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to?(:required_rubygems_version=)
@@ -32,15 +32,15 @@ Gem::Specification.new do |s|
     "features/support/implicitly_mapped_model.rb",
     "features/support/nonstandard_attribute_model.rb",
     "install_gemsets.sh",
-    "lib/has_enumeration.rb",
-    "lib/has_enumeration/aggregate_conditions_override.rb",
-    "lib/has_enumeration/arel/table_extensions.rb",
-    "lib/has_enumeration/arel/table_extensions_arel_one.rb",
-    "lib/has_enumeration/class_methods.rb",
-    "spec/has_enumeration/has_enumeration_spec.rb",
+    "lib/extended_has_enumeration.rb",
+    "lib/extended_has_enumeration/aggregate_conditions_override.rb",
+    "lib/extended_has_enumeration/arel/table_extensions.rb",
+    "lib/extended_has_enumeration/arel/table_extensions_arel_one.rb",
+    "lib/extended_has_enumeration/class_methods.rb",
+    "spec/extended_has_enumeration/extended_has_enumeration_spec.rb",
     "spec/spec_helper.rb"
   ]
-  s.homepage = "http://github.com/gregspurrier/has_enumeration"
+  s.homepage = "http://github.com/maxtsap/has_enumeration"
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.19"
   s.summary = "Support for symbol-based enumerations in ActiveRecord"

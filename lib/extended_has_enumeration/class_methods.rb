@@ -1,4 +1,4 @@
-module HasEnumeration
+module ExtendedHasEnumeration
   module ClassMethods
     # Declares an enumerated attribute called +enumeration+ consisting of
     # the symbols defined in +mapping+.
@@ -57,7 +57,7 @@ module HasEnumeration
       else
         # Install our aggregate condition handling override, but only once
         unless @aggregate_conditions_override_installed
-          extend HasEnumeration::AggregateConditionsOverride
+          extend ExtendedHasEnumeration::AggregateConditionsOverride
           @aggregate_conditions_override_installed = true
         end
       end

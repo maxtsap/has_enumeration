@@ -1,4 +1,4 @@
-module HasEnumeration
+module ExtendedHasEnumeration
   module Arel
     module TableExtensions
       def self.included(base)

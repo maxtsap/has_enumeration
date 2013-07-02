@@ -1,6 +1,6 @@
 # Support for Arel 1.  Will eventually be removed once most people are on
 # Arel 2.
-module HasEnumeration
+module ExtendedHasEnumeration
   module Arel
     module TableExtensionsArelOne
       def self.included(base)

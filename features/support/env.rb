@@ -4,7 +4,7 @@ require 'rubygems'
 require 'bundler'
 Bundler.require(:default, :test)
 
-require 'has_enumeration'
+require 'extended_has_enumeration'
 
 ActiveRecord::Base.establish_connection(
   :adapter => defined?(JRUBY_VERSION) ? 'jdbcsqlite3': 'sqlite3',

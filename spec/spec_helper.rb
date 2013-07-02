@@ -4,7 +4,7 @@ Bundler.require(:default, :test)
 
 require 'rspec'
 
-require File.expand_path('../lib/has_enumeration', File.dirname(__FILE__))
+require File.expand_path('../lib/extended_has_enumeration', File.dirname(__FILE__))
 require File.expand_path('../features/support/explicitly_mapped_model', File.dirname(__FILE__))
 
 ActiveRecord::Base.establish_connection(
