@@ -80,7 +80,7 @@ module ExtendedHasEnumeration
         end
 
         define_method :to_sym do
-          @value
+          @raw_value.try(:to_sym)
         end
 
         define_method :value do
@@ -88,7 +88,7 @@ module ExtendedHasEnumeration
         end
 
         define_method :to_s do
-          @value.to_s
+          @raw_value.to_s
         end
 
         define_method :humanize do
