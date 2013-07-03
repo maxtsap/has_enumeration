@@ -29,13 +29,24 @@ module ExtendedHasEnumeration
         mapping = mapping_hash
       end
 
+      if options[:initial].present?
+        class_eval do
+          after_initialize :"initialize_#{enumeration}"
+
+          define_method :"initialize_#{enumeration}" do
+            self.send("#{enumeration}=", self.send(enumeration).blank? ? options[:initial] : self.send(enumeration))
+          end
+        end
+      end
+
+
       # The underlying attribute
       attribute = options[:attribute] || enumeration
 
       # ActiveRecord's composed_of method will do most of the work for us.
       # All we have to do is cons up a class that implements the bidirectional
       # mapping described by the provided hash.
-      klass = create_enumeration_mapping_class(mapping)
+      klass = create_enumeration_mapping_class(mapping, options)
       attr_enumeration_mapping_classes[enumeration] = klass
 
       # Bind the class to a name within the scope of this class
@@ -46,8 +57,8 @@ module ExtendedHasEnumeration
       composed_of(enumeration,
         :class_name => scoped_class_name,
         :mapping => [attribute.to_s, 'raw_value'],
-        :converter => :from_sym,
-        :allow_nil => true
+        :constructor => :constructor,
+        :converter => :from_sym
       )
 
       if ActiveRecord::VERSION::MAJOR >= 3 && ActiveRecord::VERSION::MINOR == 0
@@ -68,38 +79,44 @@ module ExtendedHasEnumeration
       @attr_enumeration_mapping_classes ||= {}
     end
 
-    def create_enumeration_mapping_class(mapping)
+    def create_enumeration_mapping_class(mapping, options={})
       mapping = mapping.with_indifferent_access
+      default = options[:default]
+      allow_blank = options[:allow_blank]
       Class.new do
-        attr_reader :raw_value
-        alias_method :humanize, :raw_value
+        # attr_reader :raw_value
+        # alias_method :humanize, :raw_value
+        delegate :blank?, to: :raw_value
 
         define_method :initialize do |raw_value|
           @raw_value = raw_value
-          @value = mapping[raw_value]
+          @value = mapping[@raw_value]
+        end
+
+        define_method :raw_value do
+          @raw_value.blank? ? default : @raw_value
         end
 
         define_method :to_sym do
-          @raw_value.try(:to_sym)
+          raw_value.try(:to_sym)
         end
 
         define_method :value do
-          @values
+          mapping[raw_value]
         end
 
         define_method :to_s do
-          @raw_value.to_s
+          raw_value.to_s
         end
 
         define_method :humanize do
-          @raw_value.to_s.humanize
+          to_s.humanize
         end
 
         mapping.keys.each do |sym|
           predicate = "#{sym}?".to_sym
-          value = mapping[sym]
           define_method predicate do
-            @raw_value.to_sym == sym.to_sym
+            to_sym == sym.to_sym
           end
         end
 
@@ -108,11 +125,18 @@ module ExtendedHasEnumeration
             mapping
           end
           define_method :from_sym do |sym|
-            unless mapping.has_key?(sym)
+            if !mapping.has_key?(sym) && !sym.blank?
               raise ArgumentError.new(
                 "#{sym.inspect} is not one of {#{mapping.keys.map(&:inspect).sort.join(', ')}}"
               )
+            elsif !allow_blank && sym.blank?
+              raise ArgumentError.new(
+                "#{name.split('::').last} can't be blank"
+              )
             end
+            new(sym)
+          end
+          define_method :constructor do |sym|
             new(sym)
           end
         end

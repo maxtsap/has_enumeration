@@ -34,16 +34,13 @@ Then /^the ([a-z_]+\?) predicate should be (true|false)$/ do |predicate, value|
   else
     expected_value = false
   end
-  @object.color.send(predicate).should == expected_value  
+  @object.color.send(predicate).should == expected_value
 end
 
 
 Given /^a set of objects with a variety of values for the enumeration$/ do
-  a = ExplicitlyMappedModel.new(:color => :red)
-  a.color = :red
-  p a
   @model_class.delete_all
-  
+
   2.times do
     [:red, :green, :blue].each do |color|
       @model_class.create!(:color => color)

@@ -40,14 +40,14 @@ end
 describe ExtendedHasEnumeration, 'with an uninitialied value' do
   context 'in a newly-created object' do
     it 'returns nil for the value of the enumeration' do
-      ExplicitlyMappedModel.new.color.should be_nil
+      ExplicitlyMappedModel.new.color.raw_value.should be_nil
     end
   end
 
   context 'in an existing object' do
     it 'returns nil for the value of the enumeration' do
       object = ExplicitlyMappedModel.find(ExplicitlyMappedModel.create!.id)
-      object.color.should be_nil
+      object.color.raw_value.should be_nil
     end
   end
 end
@@ -56,45 +56,123 @@ describe ExtendedHasEnumeration, 'assignment of nil' do
   it 'sets the enumeration to nil' do
     object = ExplicitlyMappedModel.new(:color => :red)
     object.color = nil
-    object.color.should be_nil
+    object.color.raw_value.should be_nil
   end
 
   it 'persists across a trip to the database' do
     object = ExplicitlyMappedModel.create!(:color => :red)
     object.color = nil
     object.save!
-    ExplicitlyMappedModel.find(object.id).color.should be_nil
+    ExplicitlyMappedModel.find(object.id).color.raw_value.should be_nil
   end
 end
 
 describe ExtendedHasEnumeration, 'string formatting' do
-  it 'returns the value as a string if to_s is called on it'  do
+  it 'returns the value as a string if to_s is called on it' do
     object = ExplicitlyMappedModel.new(:color => :red)
-    object.color.to_s.should == 'Red color'
+    object.color.to_s.should == 'red'
+  end
+end
+
+describe ExtendedHasEnumeration, 'symbol formatting' do
+  it 'returns the value as a string if to_s is called on it' do
+    object = ExplicitlyMappedModel.new(:color => :red)
+    object.color.to_sym.should == :red
+  end
+end
+
+describe ExtendedHasEnumeration, 'symbol formatting' do
+  it 'returns the value as a string if to_s is called on it' do
+    object = ExplicitlyMappedModel.new(:color => :red)
+    object.color.value.should == 'Red color'
   end
 end
 
 describe ExtendedHasEnumeration, 'hash value' do
-  it 'returns the raw value as a string if raw_value is called on it'  do
+  it 'returns the raw value as a string if raw_value is called on it' do
     object = ExplicitlyMappedModel.new(:color => :red)
     object.color.raw_value.should == :red
   end
 
-  it 'returns the raw value as a string if humanize is called on it'  do
+  it 'returns the raw value as a string if humanize is called on it' do
     object = ExplicitlyMappedModel.new(:color => :red)
     object.color.humanize.should == 'Red'
   end
 end
 
 describe ExtendedHasEnumeration, 'source' do
-  it 'returns the passed hash'  do
-    ExplicitlyMappedModel::Color.source.should == {'red'=>'Red color', 'green'=>2, 'blue'=>3}    
+  it 'returns the passed hash' do
+    ExplicitlyMappedModel::Color.source.should == {'red' => 'Red color', 'green' => 2, 'blue' => 3}
   end
 end
 
 describe ExtendedHasEnumeration, 'has hash with with_indifferent_access' do
-  it 'it allows assign string'  do
+  it 'allows assign string' do
     object = ExplicitlyMappedModel.create!(:color => 'red')
     object.color.raw_value.should == 'red'
+  end
+end
+
+describe ExtendedHasEnumeration, 'constructor' do
+  it 'returns class without passing value' do
+    object = ExplicitlyMappedModel.create!
+    object.color.class.should == ExplicitlyMappedModel::Color
+  end
+
+  it 'returns nil on raw_value without passing value' do
+    object = ExplicitlyMappedModel.create! color: nil
+    object.color.raw_value.should be_blank
+  end
+end
+
+describe ExtendedHasEnumeration, 'default value' do
+
+  it 'returns true when calls red? on it' do
+    object = ExplicitlyMappedModelWithDefault.create!
+    object.color.red?.should be_true
+  end
+
+  it 'returns default value' do
+    object = ExplicitlyMappedModelWithDefault.create!
+    object.color.raw_value.should == :red
+  end
+
+  it 'returns default value of hash' do
+    object = ExplicitlyMappedModelWithDefault.create!
+    object.color.value.should == 'Red color'
+  end
+
+  it 'returns nil if default is wrong' do
+    object = ModelWithWrongDefault.create!
+    object.color.value.should be_nil
+  end
+end
+
+describe ExtendedHasEnumeration, 'initial value' do
+
+  it 'returns true when calls red? on it' do
+    object = MappedModelWithInitial.create!
+    object.color.red?.should be_true
+  end
+
+  it 'returns initial value' do
+    object = MappedModelWithInitial.create!
+    object.color.raw_value.should == :red
+  end
+
+  it 'returns initial value of hash' do
+    object = MappedModelWithInitial.create!
+    object.color.value.should == 'Red color'
+  end
+
+  it 'returns nil after seting to it' do
+    object = MappedModelWithInitial.create!
+    object.color = nil
+    object.color.raw_value.should be_nil
+  end
+
+  it 'returns nil if default is wrong' do
+    object = ModelWithWrongDefault.create!
+    object.color.value.should be_nil
   end
 end

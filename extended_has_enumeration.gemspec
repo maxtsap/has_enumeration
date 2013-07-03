@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = "extended_has_enumeration"
-  s.version = "0.0.2"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to?(:required_rubygems_version=)
   s.authors = ["Greg Spurrier"]
@@ -29,6 +29,9 @@ Gem::Specification.new do |s|
     "features/step_definitions/has_enumeration_steps.rb",
     "features/support/env.rb",
     "features/support/explicitly_mapped_model.rb",
+    "features/support/explicitly_mapped_model_with_default.rb",
+    "features/support/model_with_wrong_default.rb",
+    "features/support/mapped_model_with_initial.rb",
     "features/support/implicitly_mapped_model.rb",
     "features/support/nonstandard_attribute_model.rb",
     "install_gemsets.sh",
